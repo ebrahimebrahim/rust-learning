@@ -797,7 +797,44 @@ Claude should actively:
 - [what to pick up, any prep]
 ```
 
-### Current Status: Not yet started
+### Session 1 — 2026-03-01
+**Module:** 0.1 — Environment & First Contact (in progress)
+**Duration:** ~30 min
+**Covered:**
+- Installed Rust 1.93.1 via rustup
+- Cargo project structure: `cargo new`, `Cargo.toml`, `src/main.rs`
+- Binary vs library crates (`main.rs` vs `lib.rs`)
+- Build profiles: `target/debug/` vs `target/release/`
+- Wrote first real code: a grid world with `make_tile` and `tile_symbol`
+- Introduced: `let`/`let mut`, `Vec`, `for`/ranges, expression-based returns,
+  `match`, `usize`, `println!` macro, format string interpolation
+
+**Key Insights:**
+- Learner asks good "why" questions (target dir naming, debug symbols, binary
+  vs library distinction) — confirm theory-first calibration is right
+- Prefers to run generative commands themselves (`cargo new`) — let them drive
+  creation, Claude can run read/inspection commands freely
+
+**Exercises:**
+- Grid world code written, not yet run by learner: in-progress
+
+**Checkpoint:** Deferred to next session — learner reviewing code independently
+
+**Notes Created:**
+- `notes/0.1-first-contact/main.pdf` — review guide for the five key Rust
+  concepts in the grid code
+
+**Code Written:**
+- `pond/src/main.rs` — 10x8 tile grid with border/water/grass generation
+
+**Curriculum Adaptations:**
+- None yet
+
+**Next Session:**
+- Run the grid code, discuss output
+- Dig into the five Rust concepts from the review note
+- Add a dependency (`rand`) for randomized world generation
+- Potentially begin Module 1.1 (ownership) if 0.1 wraps up quickly
 
 ---
 
