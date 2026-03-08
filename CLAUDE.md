@@ -39,6 +39,9 @@ scaffold — adapt it based on how sessions go.
   subdirectories (created during the course)
 - **Exercises:** Integrated into the project. Standalone exercises go in
   `exercises/` if needed.
+- **Scratch file:** `scratch.rs` in the project root for quick experimentation.
+  Compile directly with `rustc scratch.rs && ./scratch` (no Cargo needed).
+  Run `./watch-scratch.sh` to auto-recompile on save (requires `entr`).
 
 ## Notes / Typesetting
 
