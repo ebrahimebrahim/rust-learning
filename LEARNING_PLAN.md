@@ -836,6 +836,69 @@ Claude should actively:
 - Add a dependency (`rand`) for randomized world generation
 - Potentially begin Module 1.1 (ownership) if 0.1 wraps up quickly
 
+### Session 2 — 2026-03-08
+**Module:** 0.1 wrap-up + 1.1 — Ownership & Borrowing (in progress)
+**Duration:** ~45 min
+**Covered:**
+- Reviewed Session 1 notes and `main.rs` — all five concepts solid
+- Clarified `mut` semantics: binding-level property, not type-level (closer to
+  C++ `const` than Python "mutable")
+- `::` as the path separator (associated functions, modules, enum variants)
+- No function overloading in Rust — traits/generics/macros fill that role
+- Type annotations use `name: Type` syntax (ML/Python style, not C style)
+- Strong type inference inside function bodies; annotations required at
+  function boundaries
+- First external dependency: added `rand` 0.10, used `rand::random_range`
+- Cargo always downloads and compiles source (no pre-built binaries)
+- `docs.rs` as the standard API documentation site
+- **Ownership core concepts:**
+  - Every value has one owner; dropped when owner goes out of scope
+  - Move by default on assignment (prevents double-free)
+  - `Copy` trait for cheap bitwise-copy types (integers, floats, bool, char)
+  - Shared references `&T` (read-only, multiple allowed)
+  - Mutable references `&mut T` (exclusive, one at a time)
+  - The central law: `&T` or `&mut T`, never both simultaneously
+  - Non-Lexical Lifetimes: borrows end at last use, not end of scope
+  - Two different `mut`s: binding-level vs reference-level
+  - When to borrow vs pass by value (small Copy types → value)
+
+**Key Insights:**
+- Learner correctly intuited that `mut` is like `const` (flipped default),
+  not like Python's mutable/immutable type distinction
+- Good instinct for reading compiler errors — extracted move semantics and
+  `Copy` trait from error messages before being told
+- Naturally asks "is this the same as X in language Y?" — contrastive
+  explanations work well
+- Curious about the ecosystem (licensing, source distribution, commercial
+  adoption) — appreciates the engineering culture context
+
+**Exercises:**
+- Grid world: completed (ran and reviewed)
+- Added `rand` dependency and randomized tile generation: completed
+- Refactored `tile_symbol` to take `&u8`, then reverted (understood why
+  borrowing a Copy type is pointless): completed
+
+**Checkpoint:** Partial — core ownership concepts understood, lifetimes and
+ownership-in-structs not yet covered
+
+**Notes Created:**
+- `notes/1.1-ownership/main.pdf` — ownership, moves, borrowing, `&` vs
+  `&mut`, the central law, NLL, two `mut`s
+
+**Code Written:**
+- `pond/src/main.rs` — added `rand` dependency, randomized world generation
+- `scratch.rs` + `watch-scratch.sh` — scratch file workflow for experimenting
+
+**Curriculum Adaptations:**
+- Added scratch file workflow (direct `rustc`, no Cargo) for quick
+  experimentation; documented in CLAUDE.md
+
+**Next Session:**
+- Solidify ownership with an exercise: refactor `main.rs` to pass the grid
+  to separate functions, feel the borrow checker in practice
+- Begin Module 1.2: structs and enums — replace `u8` tiles with proper types
+- Lifetimes will surface naturally when references appear in structs
+
 ---
 
 ## 6. Reference Material

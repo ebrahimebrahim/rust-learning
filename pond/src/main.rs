@@ -1,3 +1,5 @@
+use rand::RngExt;
+
 fn main() {
     let width = 10;
     let height = 8;
@@ -29,14 +31,13 @@ fn main() {
 // Tiles are just integers for now — we'll replace this with proper types
 // in the next module. 0 = water, 1 = grass, 2 = rock
 fn make_tile(x: usize, y: usize) -> u8 {
+    let mut rng = rand::rng();
     // This is an expression — the last expression in a block is
     // its return value (no semicolon). No `return` keyword needed.
     if x == 0 || x == 9 || y == 0 || y == 7 {
         2 // rock border
-    } else if (x + y) % 3 == 0 {
-        0 // water
     } else {
-        1 // grass
+        rng.random_range(0..=1) // 0 for water or 1 for grass
     }
 }
 
