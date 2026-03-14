@@ -899,6 +899,55 @@ ownership-in-structs not yet covered
 - Begin Module 1.2: structs and enums — replace `u8` tiles with proper types
 - Lifetimes will surface naturally when references appear in structs
 
+### Session 3 — 2026-03-14
+**Module:** 1.1 wrap-up + 1.2 — Structs, Enums, and Pattern Matching (in progress)
+**Duration:** ~30 min
+**Covered:**
+- Ownership in practice: refactored `main.rs` into `create_world` (returns
+  owned `Vec`) and `display_world` (borrows `&[T]` slice)
+- `&[T]` slices: fat pointer (ptr + len), more general than `&Vec<T>`
+- Enums as sum types: fieldless (`Terrain`) and with inline data (`Entity`)
+- Structs as product types (`Tile` with `terrain` + `entity` fields)
+- `Option<T>` as Rust's `Maybe` — `Some(T)` / `None`
+- Pattern matching: exhaustive matching on enums, `{ .. }` to ignore fields,
+  nested variant matching (`ResourceKind` inside `Entity`)
+- `String` vs `&str`: owned vs borrowed strings, `String::from()`
+- Can't move out of a `&T`: matched on `&tile.entity` to borrow instead
+- Item declarations (enum, struct, fn) don't need trailing semicolons
+- `kind` as idiomatic name for "type-of" fields (since `type` is reserved)
+
+**Key Insights:**
+- Learner naturally asked about the Haskell/C++ spectrum — "is this how you'd
+  naturally do things in Rust?" Shows good instinct for language idiom
+- Comfortable with sum/product type distinction from Haskell; the new concept
+  is Rust's specific syntax and ownership interaction
+- Asks good questions about what's idiomatic vs just possible
+
+**Exercises:**
+- Refactor grid into `create_world`/`display_world` functions: completed
+- Replace `u8` tiles with `Terrain` enum: completed
+- Add `Entity` enum, `Tile` struct, `Option<Entity>`: completed
+- Nested pattern matching on `ResourceKind`: completed (self-discovered)
+
+**Checkpoint:** Partial — structs, enums, pattern matching, Option solid.
+`impl` blocks, derive traits, and newtype pattern not yet covered.
+
+**Notes Created:**
+- None this session
+
+**Code Written:**
+- `pond/src/main.rs` — full refactor: Terrain/Entity/Tile types, pattern
+  matching, entity symbols, randomized entity placement
+
+**Curriculum Adaptations:**
+- None
+
+**Next Session:**
+- `impl` blocks: add methods to `Tile`, `Entity` (e.g., `tile.symbol()`)
+- `#[derive(...)]` in depth: Debug, PartialEq, and when you can/can't derive
+- Potentially begin Module 1.3 (traits) if 1.2 wraps quickly — natural
+  transition from "methods on types" to "shared behavior across types"
+
 ---
 
 ## 6. Reference Material

@@ -1,54 +1,114 @@
 use rand::RngExt;
 
+#[derive(Clone, Copy)]
+enum Terrain {
+    Water,
+    Grass,
+    Rock,
+}
+
+enum ResourceKind {
+    Apple,
+    Berry,
+}
+
+enum Entity {
+    Creature {name:String, hunger: u32},
+    Resource {kind: ResourceKind, amount: u32},
+}
+
+struct Tile {
+    terrain: Terrain,
+    entity: Option<Entity>,
+}
+
+
+
 fn main() {
     let width = 10;
     let height = 8;
 
-    // Create a flat grid of tiles
-    // Vec<T> is Rust's growable array — like std::vector<T> in C++
-    let mut grid = Vec::new();
+    let grid = create_world(width, height);
 
-    for y in 0..height {
-        for x in 0..width {
-            let tile = make_tile(x, y);
-            grid.push(tile);
-        }
-    }
-
-    // Display the world
-    for y in 0..height {
-        for x in 0..width {
-            let index = y * width + x;
-            let symbol = tile_symbol(grid[index]);
-            print!("{symbol}");
-        }
-        println!();
-    }
+    display_world(&grid, width, height);
 
     println!("\nPond world: {width}x{height}, {} tiles", grid.len());
 }
 
-// Tiles are just integers for now — we'll replace this with proper types
-// in the next module. 0 = water, 1 = grass, 2 = rock
-fn make_tile(x: usize, y: usize) -> u8 {
+fn make_terrain(x: usize, y: usize) -> Terrain {
     let mut rng = rand::rng();
-    // This is an expression — the last expression in a block is
-    // its return value (no semicolon). No `return` keyword needed.
     if x == 0 || x == 9 || y == 0 || y == 7 {
-        2 // rock border
+        Terrain::Rock
     } else {
-        rng.random_range(0..=1) // 0 for water or 1 for grass
+        if rng.random_bool(0.15) {Terrain::Water} else {Terrain::Grass}
     }
 }
 
-fn tile_symbol(tile: u8) -> char {
-    // `match` is exhaustive pattern matching — like Haskell's case
-    // The compiler forces you to handle every possible value.
-    // The _ arm is the wildcard (catch-all).
-    match tile {
-        0 => '~',
-        1 => '.',
-        2 => '#',
-        _ => '?',
+fn populate_tile(terrain : Terrain) -> Tile {
+    let mut rng = rand::rng();
+    match terrain {
+        Terrain::Rock => Tile { terrain:terrain, entity: None },
+        Terrain::Water => Tile { terrain:terrain, entity: None },
+        Terrain::Grass => Tile {
+            terrain:terrain,
+            entity: if rng.random_bool(0.9) {None} else {
+                Some(
+                    if rng.random_bool(0.5) {
+                        Entity::Creature { name: String::from("Bob"), hunger: 0 }
+                    } else {
+                        Entity::Resource {
+                            kind: if rng.random_bool(0.5) {ResourceKind::Apple} else {ResourceKind::Berry},
+                            amount: rng.random_range(1..=5),
+                        }
+                    }
+                )
+            }
+        },
+    }
+}
+
+fn terrain_symbol(terrain: Terrain) -> char {
+    match terrain {
+        Terrain::Rock => '#',
+        Terrain::Water => '~',
+        Terrain::Grass => '.',
+    }
+}
+
+fn entity_symbol(entity : &Entity) -> char {
+    match entity {
+        Entity::Creature {..} => '@', 
+        Entity::Resource { kind:ResourceKind::Apple, .. } => 'a',
+        Entity::Resource { kind:ResourceKind::Berry, .. } => 'b',
+    }
+}
+
+fn tile_symbol(tile:&Tile) -> char {
+    match &tile.entity {
+        None => terrain_symbol(tile.terrain),
+        Some(entity) => entity_symbol(entity)
+    }
+}
+
+fn create_world(width: usize, height: usize) -> Vec<Tile> {
+    let mut grid = Vec::new();
+
+    for y in 0..height {
+        for x in 0..width {
+            let tile = populate_tile(make_terrain(x, y));
+            grid.push(tile);
+        }
+    }
+    grid
+}
+
+fn display_world(grid: &[Tile], width: usize, height: usize) {
+    for y in 0..height {
+        for x in 0..width {
+            let index = y * width + x;
+            let symbol = tile_symbol(&grid[index]);
+            print!("{symbol}");
+        }
+        println!();
     }
 }

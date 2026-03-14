@@ -29,7 +29,8 @@ scaffold — adapt it based on how sessions go.
 1. Read Progress Log → recap
 2. Warm-up (optional) → content → exercises → checkpoint → bridge
 3. Update Progress Log at session end
-4. Create typst notes when material warrants rendering
+4. Create typst session notes — a concise review sheet covering concepts
+   and patterns from the session, for review before next time
 
 ## Conventions
 
@@ -54,9 +55,9 @@ scaffold — adapt it based on how sessions go.
   `notes/<topic>/main.typ` for cross-cutting notes
 - **Compile:** `typst compile --root . notes/<path>/main.typ notes/<path>/main.pdf`
 - **View:** `xdg-open notes/<path>/main.pdf`
-- **When:** Create notes organically when material is complex enough to
-  benefit from rendering (architecture diagrams, ownership flow,
-  type relationships). Don't force.
+- **When:** Any session where new concepts are introduced. Create a concise
+  review sheet of what was covered — concepts, patterns, things that came up
+  — so it's useful to skim before the next session.
 
 ## Adaptivity
 
