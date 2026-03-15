@@ -948,6 +948,67 @@ ownership-in-structs not yet covered
 - Potentially begin Module 1.3 (traits) if 1.2 wraps quickly — natural
   transition from "methods on types" to "shared behavior across types"
 
+### Session 4 — 2026-03-15
+**Module:** 1.2 wrap-up + 1.3 — Traits and Generics (in progress)
+**Duration:** ~30 min
+**Covered:**
+- `impl` blocks: methods (`&self`) vs associated functions (no `self`)
+- `&self` as syntactic sugar for `self: &Self`
+- Auto-referencing on dot operator: compiler inserts `&`/`&mut`/deref to match
+  method signature. Doesn't apply to free function calls (no anchor type to
+  resolve against)
+- Match ergonomics: matching `&T` against `T` patterns auto-dereferences
+- `*` dereference operator (rarely needed in practice due to auto-deref)
+- `#[derive(...)]`: compiler-generated trait impls. Recursive constraint — all
+  fields must impl the trait. `Debug` is near-universal, `Copy` is restrictive
+  (e.g., `String` prevents `Copy` on `Entity`)
+- Attributes (`#[...]`) are metadata on items, not a C preprocessor — closer
+  to Python decorators
+- **Traits:** defined `Symbol` trait, implemented for all four types
+- Trait signatures are strict contracts — impl must match exactly
+- Generics with trait bounds: `fn foo(x: &impl Trait)` / `fn foo<T: Trait>(x: &T)`
+- Monomorphization: Rust defaults to static dispatch (unlike Haskell's
+  dictionary passing). Zero runtime cost.
+- `Display` trait: can't be derived, must be hand-written
+- Blanket implementations (`impl<T: TraitA> TraitB for T`) and the orphan rule:
+  must own either the trait or the type. Rust's coherence vs Haskell's orphan
+  instances.
+
+**Key Insights:**
+- Learner draws good analogies from Python (decorators, Protocol, staticmethod)
+  — validates quickly and moves on
+- Independently asked "can I impl Display for all Symbol types at once?" —
+  arrived at blanket impls naturally before being told about them
+- Pushes back when explanations are hand-wavy ("I don't understand the
+  fundamental difference") — wants real reasons, not intuition-level answers
+
+**Exercises:**
+- Refactor free functions into `impl` blocks with methods: completed
+- Add `#[derive(Debug)]` to all types, print with `{:?}`: completed
+- Attempted `#[derive(Copy)]` on `Entity`, saw the constraint error: completed
+- Define `Symbol` trait, implement for all types: completed
+- Implement `Display` for `Terrain` by hand: completed
+
+**Checkpoint:** Partial — trait basics solid (define, implement, bounds, blanket
+impls, orphan rule). Still to cover: default methods, supertraits, `dyn Trait`
+(dynamic dispatch), operator overloading traits.
+
+**Notes Created:**
+- None yet (to be created)
+
+**Code Written:**
+- `pond/src/main.rs` — `impl` blocks, `Symbol` trait, `Display` for `Terrain`,
+  `#[derive(Debug)]` on all types
+
+**Curriculum Adaptations:**
+- None
+
+**Next Session:**
+- Continue Module 1.3: default methods, supertraits, `dyn Trait` (dynamic
+  dispatch), operator overloading traits
+- Apply traits more deeply to pond: e.g., trait for entity behaviors
+- Potentially begin Module 1.4 (error handling) if 1.3 wraps up
+
 ---
 
 ## 6. Reference Material

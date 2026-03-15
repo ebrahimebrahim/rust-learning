@@ -1,25 +1,33 @@
 use rand::RngExt;
+use std::fmt;
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug)]
 enum Terrain {
     Water,
     Grass,
     Rock,
 }
 
+#[derive(Clone, Copy, Debug)]
 enum ResourceKind {
     Apple,
     Berry,
 }
 
+#[derive(Debug)]
 enum Entity {
     Creature {name:String, hunger: u32},
     Resource {kind: ResourceKind, amount: u32},
 }
 
+#[derive(Debug)]
 struct Tile {
     terrain: Terrain,
     entity: Option<Entity>,
+}
+
+trait Symbol {
+    fn symbol(&self) -> char;
 }
 
 
@@ -33,6 +41,10 @@ fn main() {
     display_world(&grid, width, height);
 
     println!("\nPond world: {width}x{height}, {} tiles", grid.len());
+
+    println!("Example tile (debug): {:?}", grid[12]);
+
+    println!("Example terrain (display): {}", grid[12].terrain);
 }
 
 fn make_terrain(x: usize, y: usize) -> Terrain {
@@ -67,26 +79,46 @@ fn populate_tile(terrain : Terrain) -> Tile {
     }
 }
 
-fn terrain_symbol(terrain: Terrain) -> char {
-    match terrain {
-        Terrain::Rock => '#',
-        Terrain::Water => '~',
-        Terrain::Grass => '.',
+impl Symbol for Terrain {
+    fn symbol(&self) -> char {
+        match self {
+            Terrain::Rock => '#',
+            Terrain::Water => '~',
+            Terrain::Grass => '.',
+        }
     }
 }
 
-fn entity_symbol(entity : &Entity) -> char {
-    match entity {
-        Entity::Creature {..} => '@', 
-        Entity::Resource { kind:ResourceKind::Apple, .. } => 'a',
-        Entity::Resource { kind:ResourceKind::Berry, .. } => 'b',
+impl Symbol for ResourceKind {
+    fn symbol(&self) -> char {
+        match self {
+            ResourceKind::Apple => 'a',
+            ResourceKind::Berry => 'b',
+        }
     }
 }
 
-fn tile_symbol(tile:&Tile) -> char {
-    match &tile.entity {
-        None => terrain_symbol(tile.terrain),
-        Some(entity) => entity_symbol(entity)
+impl Symbol for Entity {
+    fn symbol(&self) -> char {
+        match self {
+            Entity::Creature {..} => '@', 
+            Entity::Resource { kind, .. } => kind.symbol(),
+        }
+    }
+}
+
+impl Symbol for Tile {
+    fn symbol(&self) -> char {
+        match &self.entity {
+            None => self.terrain.symbol(),
+            Some(entity) => entity.symbol(),
+        }
+    }
+}
+
+impl fmt::Display for Terrain {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}", self.symbol())
     }
 }
 
@@ -106,7 +138,7 @@ fn display_world(grid: &[Tile], width: usize, height: usize) {
     for y in 0..height {
         for x in 0..width {
             let index = y * width + x;
-            let symbol = tile_symbol(&grid[index]);
+            let symbol = grid[index].symbol();
             print!("{symbol}");
         }
         println!();
