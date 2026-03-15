@@ -590,6 +590,11 @@ systems? How does async enable multiplayer? Content determined at runtime.
 
 6. **Bridge** (1 min): Set up what's next. Update the Progress Log.
 
+7. **Session notes**: Create a concise Typst review sheet covering concepts
+   and patterns from the session.
+
+8. **Commit**: Commit all session changes (code, notes, progress log).
+
 ### Tone and Style
 
 - **Calibration:** This learner is a PhD mathematician who programs in C++

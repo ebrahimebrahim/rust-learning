@@ -31,6 +31,7 @@ scaffold — adapt it based on how sessions go.
 3. Update Progress Log at session end
 4. Create typst session notes — a concise review sheet covering concepts
    and patterns from the session, for review before next time
+5. Commit all session changes (code, notes, progress log)
 
 ## Conventions
 
