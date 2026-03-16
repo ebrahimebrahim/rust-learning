@@ -5,7 +5,7 @@
 #note-header(
   [impl, derive, and Traits],
   module: "1.2/1.3",
-  date: "Session 4 — 2026-03-15",
+  date: "Sessions 4–5 — 2026-03-15/16",
 )
 
 = `impl` Blocks — Two Forms
@@ -117,9 +117,97 @@ impl fmt::Display for Terrain {
     }
 }")
 
-= Still Ahead
+= Default Methods
 
-- Default methods in traits (methods with a body that impls can override)
-- Supertraits: `trait A: B` -- A requires B
-- `dyn Trait` -- dynamic dispatch (trait objects, vtables)
-- Operator overloading via std traits (`Add`, `Index`, etc.)
+A trait can provide a method body -- impls get it for free, can override.
+
+#code-block("trait Symbol {
+    fn symbol(&self) -> char;
+
+    fn label(&self) -> String {        // default method
+        format!(\"[{}]\", self.symbol())  // can call other trait methods
+    }
+}")
+
+Unlike Haskell, there's no `MINIMAL` pragma -- no formal way to declare which subset of methods constitutes a minimal complete definition.
+
+= Supertraits
+
+`trait A: B` means implementing `A` requires also implementing `B`. Inside `A`'s methods, you can call `B`'s methods on `self`.
+
+#code-block("trait Describable: Symbol {
+    fn describe(&self) -> String;
+    // can call self.symbol() here -- compiler knows Symbol is implemented
+}")
+
+Stack with `+`: `trait A: B + C + Debug`. Same `+` syntax appears in trait bounds: `fn foo<T: Display + Clone>(x: &T)`.
+
+This is interface inheritance only -- no data, no diamond problem.
+
+= `dyn Trait` -- Dynamic Dispatch
+
+Static dispatch (monomorphization) requires the compiler to know the concrete type. For heterogeneous collections, you need *type erasure*.
+
+#code-block("let things: Vec<Box<dyn Symbol>> = vec![
+    Box::new(Terrain::Water),
+    Box::new(Entity::Creature { name: String::from(\"Bob\"), hunger: 0 }),
+];
+for thing in &things {
+    println!(\"{}\", thing.symbol());  // dispatched via vtable
+}")
+
+`Box` and `dyn` solve two different problems:
+- `Box` #sym.arrow.r uniform pointer size in the `Vec` (indirection to heap)
+- `dyn` #sym.arrow.r type erasure (which implementation to call is resolved at runtime)
+
+`Box<dyn Symbol>` is a *fat pointer*: `[ptr to data] + [ptr to vtable]`.
+
+== Vtables
+
+One vtable per (type, trait) pair. Each is a table of function pointers with a *fixed layout* per trait:
+
+#code-block("vtable for \"Terrain as Symbol\":     vtable for \"Entity as Symbol\":
+  symbol() -> ptr to Terrain::symbol   symbol() -> ptr to Entity::symbol")
+
+Calling `thing.symbol()` = dereference vtable pointer, read function pointer at offset 0, call it. No type information needed at runtime -- the vtable pointer (set at construction time when the concrete type was known) is the only thing that selects the implementation.
+
+Compared to C++: same mechanism as virtual methods, but opt-in (`dyn`) rather than default (`virtual`).
+
+== Object Safety
+
+A trait can be used with `dyn` only if the compiler can build a vtable. Things that break it:
+
+#table(
+  columns: (1fr, 2fr),
+  stroke: 0.5pt + subtle,
+  inset: 6pt,
+  [*Violation*], [*Why*],
+  [Method returns `Self`], [Caller can't allocate unknown-size return value],
+  [Generic methods], [Would need infinite vtable entries (one per monomorphization)],
+  [`Self: Sized` bound], [`dyn Trait` is unsized -- direct contradiction],
+)
+
+Rule of thumb: if every method takes `self` behind a reference and returns concrete types, it's object-safe.
+
+= Operator Overloading
+
+Operators desugar to trait method calls:
+
+#table(
+  columns: (1fr, 1fr, 1fr),
+  stroke: 0.5pt + subtle,
+  inset: 6pt,
+  [*Syntax*], [*Desugars to*], [*Trait*],
+  [`a + b`], [`a.add(b)`], [`std::ops::Add`],
+  [`a == b`], [`a.eq(&b)`], [`std::cmp::PartialEq`],
+  [`a[i]`], [`a.index(i)`], [`std::ops::Index`],
+)
+
+#code-block("use std::ops::Add;
+
+impl Add for MyType {
+    type Output = MyType;  // associated type: fixed per impl
+    fn add(self, rhs: MyType) -> MyType { ... }
+}")
+
+`Add` is generic over the RHS: `impl Add<Vector> for Point` defines what `point + vector` means. Rust splits arithmetic into fine-grained traits (`Add`, `Sub`, `Mul`, ...) vs Haskell's bundled `Num`.

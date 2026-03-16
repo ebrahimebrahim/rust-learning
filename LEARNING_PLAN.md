@@ -1018,6 +1018,67 @@ impls, orphan rule). Still to cover: default methods, supertraits, `dyn Trait`
 - Apply traits more deeply to pond: e.g., trait for entity behaviors
 - Potentially begin Module 1.4 (error handling) if 1.3 wraps up
 
+### Session 5 — 2026-03-16
+**Module:** 1.3 — Traits and Generics (continued)
+**Duration:** ~20 min
+**Covered:**
+- Default methods in traits: methods with a body that impls get for free, can
+  override. No "minimal complete definition" annotation like Haskell
+- Supertraits: `trait A: B` means implementing A requires implementing B.
+  Interface inheritance only (no data), stacked with `+` syntax
+- `dyn Trait` — dynamic dispatch via trait objects:
+  - Motivation: need heterogeneous collections of different types under one
+    trait
+  - `Box<dyn Trait>` = fat pointer: data pointer + vtable pointer
+  - `Box` solves the memory layout problem (uniform pointer size), `dyn`
+    solves the type erasure problem (vtable-based dispatch)
+  - One vtable per (type, trait) pair, generated at compile time
+  - Vtable = table of function pointers; dispatch is by fixed offset, no type
+    info needed at runtime
+  - Type is fully erased — no runtime type tag (unlike Python)
+- Object safety: which traits can be used with `dyn`
+  - Methods returning `Self` — caller can't allocate unknown-size return
+  - Generic methods — would require infinite vtable entries
+  - `Self: Sized` bound — contradicts `dyn` being unsized
+- Operator overloading: operators desugar to trait method calls (`+` → `Add`,
+  `==` → `PartialEq`, `[]` → `Index`)
+  - Associated types (`type Output`) — fixed per impl, not chosen by caller
+  - `Add` is generic over RHS type: `impl Add<Vector> for Point`
+  - Rust splits arithmetic into fine-grained traits vs Haskell's bundled `Num`
+
+**Key Insights:**
+- Learner correctly identified the two distinct roles of `Box` (indirection for
+  uniform size) and `dyn` (type erasure for dynamic dispatch) after probing
+- Asked excellent question about how vtable lookup works without runtime type
+  info — led to key insight that vtable layout is fixed per trait, so dispatch
+  is by offset not by type
+- Explored generic methods + vtables to deepen vtable understanding: why
+  infinite monomorphizations can't be pre-built into a finite table
+- Natural framing of operator traits: "Terrain implements Add means Terrain
+  values are addable" — correct Haskell-style typeclass reasoning
+
+**Exercises:**
+- None this session (conceptual coverage, no code changes)
+
+**Checkpoint:** Deferred — trait concepts covered, checkpoint next session
+
+**Notes Created:**
+- `notes/1.3-traits/main.pdf` — updated with dyn, object safety, operator
+  overloading
+
+**Code Written:**
+- No code changes this session
+
+**Curriculum Adaptations:**
+- None
+
+**Next Session:**
+- Checkpoint on Module 1.3: conversational verification of trait understanding
+- Apply traits to pond: e.g., `dyn` for heterogeneous entity behaviors, or
+  operator traits
+- Begin Module 1.4 (error handling) — `Result<T, E>`, `?` operator, custom
+  error types
+
 ---
 
 ## 6. Reference Material
