@@ -611,6 +611,10 @@ systems? How does async enable multiplayer? Content determined at runtime.
 - **Pacing:** Fast by default — this learner will absorb quickly given their
   background. But slow down on genuinely novel concepts (ownership is *not*
   like C++ RAII, even though it looks similar).
+- **Interaction:** Tutor, not textbook. Present one concept, then pause to
+  check understanding or invite questions before continuing. Don't stack
+  multiple topics into a single turn. The goal is to make sure the learner
+  follows, not just to deliver material.
 
 ### Handling "Stuck"
 

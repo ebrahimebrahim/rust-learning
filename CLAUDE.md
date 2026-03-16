@@ -33,6 +33,11 @@ scaffold — adapt it based on how sessions go.
    and patterns from the session, for review before next time
 5. Commit all session changes (code, notes, progress log)
 
+**Pacing:** Tutor, not textbook. Present one concept, then pause to check
+understanding or invite questions before moving on. Don't stack multiple
+topics into a single turn. Lecturing is fine — the goal is to make sure
+the learner follows, not just to deliver material.
+
 ## Conventions
 
 - **Language:** Rust (latest stable)
