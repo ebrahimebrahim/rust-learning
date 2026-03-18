@@ -5,7 +5,7 @@
 #note-header(
   [impl, derive, and Traits],
   module: "1.2/1.3",
-  date: "Sessions 4–5 — 2026-03-15/16",
+  date: "Sessions 4–6 — 2026-03-15/16/17",
 )
 
 = `impl` Blocks — Two Forms
@@ -39,7 +39,7 @@ This *only* applies to the dot operator -- free function calls require explicit 
 
 When matching a reference (`&T`) against a value pattern (`T`), the compiler auto-dereferences. So `match self { Terrain::Rock => ... }` works even when `self: &Terrain`.
 
-= `\#[derive]` -- Compiler-Generated Trait Impls
+= `#[derive]` -- Compiler-Generated Trait Impls
 
 `#[derive(Trait)]` generates `impl Trait for Type` mechanically, applying the trait to each field.
 
@@ -211,3 +211,28 @@ impl Add for MyType {
 }")
 
 `Add` is generic over the RHS: `impl Add<Vector> for Point` defines what `point + vector` means. Rust splits arithmetic into fine-grained traits (`Add`, `Sub`, `Mul`, ...) vs Haskell's bundled `Num`.
+
+= Self-Test — Module 1.3 Checkpoint
+
+*Q1:* You need a `Vec` holding a mix of types that all implement trait `Foo`. What's the element type, and why two wrappers?
+
+#callout[
+  `Vec<Box<dyn Foo>>`. `Box` gives uniform pointer size (different concrete types have different layouts). `dyn` gives vtable-based dispatch (monomorphization can't work -- the `Vec` needs one homogeneous element type, but the concrete types are heterogeneous). Each element is a fat pointer: data + vtable.
+]
+
+*Q2:* Why isn't this trait object-safe?
+
+#code-block("trait Renderable {
+    fn merge(self, other: Self) -> Self;
+    fn as_format<F: Format>(&self) -> F;
+}")
+
+#callout[
+  Two violations. (1) `merge` returns `Self` -- the caller holds a `dyn Renderable` and can't know the size/layout of the return value. (2) `as_format` is generic -- each monomorphization of `F` would need its own vtable entry, requiring an infinite table.
+]
+
+*Q3:* `a + b` desugars to what? What role does the associated type play?
+
+#callout[
+  `a.add(b)` via `std::ops::Add`. The associated type `Output` pins down the return type per implementation. E.g., `impl Add<Vector> for Point { type Output = Point; }` -- adding a vector to a point yields a point. Unlike a generic parameter, an associated type is *fixed* per impl, not chosen by the caller.
+]

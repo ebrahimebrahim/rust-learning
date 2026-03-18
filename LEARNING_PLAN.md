@@ -1079,6 +1079,48 @@ impls, orphan rule). Still to cover: default methods, supertraits, `dyn Trait`
 - Begin Module 1.4 (error handling) — `Result<T, E>`, `?` operator, custom
   error types
 
+### Session 6 — 2026-03-17
+**Module:** 1.3 — Traits and Generics (checkpoint & wrap-up)
+**Duration:** ~10 min
+**Covered:**
+- Checkpoint on Module 1.3: conversational Q&A on all trait concepts
+  - `Vec<Box<dyn Trait>>`: correctly identified both roles of `Box` (uniform
+    size) and `dyn` (vtable dispatch), and why monomorphization doesn't work
+  - Object safety: identified both violations in a two-method trait (Self in
+    return position, generic method requiring infinite vtable entries)
+  - Operator overloading: `Add` trait, associated type `Output`, correct
+    examples of cross-type arithmetic
+- Attempted blanket impl `impl<T: Symbol> Display for T` — hit orphan rule
+  error. Learned that a local trait *bound* on `T` does not make `T` a
+  "covered" type — uncovered type parameters in the impl target are rejected
+  when the trait is foreign. Corrected tutor's incorrect claim.
+
+**Key Insights:**
+- Learner's instinct to question the orphan rule claim was correct — hitting
+  the compiler error was more instructive than the (wrong) explanation
+- All Session 5 conceptual material verified as solid
+
+**Exercises:**
+- Attempted blanket impl (failed due to orphan rule — instructive)
+
+**Checkpoint:** Complete — Module 1.3 fully checked. All trait concepts solid:
+define, implement, bounds, blanket impls, orphan rule, default methods,
+supertraits, dyn Trait, object safety, operator overloading.
+
+**Notes Created:**
+- None (short checkpoint session, no new concepts)
+
+**Code Written:**
+- No changes (blanket impl attempt reverted after orphan rule error)
+
+**Curriculum Adaptations:**
+- None
+
+**Next Session:**
+- Begin Module 1.4 (error handling) — `Result<T, E>`, `?` operator, custom
+  error types
+- Apply to pond: e.g., fallible world generation, file I/O for loading configs
+
 ---
 
 ## 6. Reference Material
