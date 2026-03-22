@@ -1121,6 +1121,58 @@ supertraits, dyn Trait, object safety, operator overloading.
   error types
 - Apply to pond: e.g., fallible world generation, file I/O for loading configs
 
+### Session 7 — 2026-03-22
+**Module:** 1.4 — Error Handling
+**Duration:** ~25 min
+**Covered:**
+- `Result<T, E>` as a plain enum — `Ok(T)` / `Err(E)`, analogous to Haskell's
+  `Either`
+- The `?` operator: sugar for match-and-propagate (early return on `Err`)
+- `?` only works in functions returning `Result` (or `Option`)
+- `main` can return `Result<(), E>` — prints via `Debug` on error, exits code 1
+- Custom error enums: structured, matchable failure modes with associated data
+- `Display` for error types: human-readable messages, hand-written (not derived)
+- `std::error::Error` trait requires `Display + Debug` as supertraits
+- `panic!` vs `Result`: bugs (invariant violations) vs expected runtime failures
+- `unwrap()` vs `expect("reason")`: both panic on failure, `expect` documents
+  the assumption
+- Library code returns `Result`, application code decides error policy
+- `eprintln!` for stderr output
+
+**Key Insights:**
+- Learner correctly intuited `Result` as a sum type before being told the
+  Haskell name (`Either`)
+- Good instinct for panic semantics: "something that never happens unless
+  there's a bug" — exactly the Rust convention
+- Noticed that `main` returning `Result` uses `Debug` not `Display` for error
+  output, asked good follow-up about it
+
+**Exercises:**
+- Built `Result`-returning functions in scratch.rs: completed
+- Refactored to custom `WorldError` enum with `Display`: completed
+- Applied error handling to pond's `create_world`: completed
+- Used `.expect()` with documenting message in `main`: completed
+
+**Checkpoint:** Complete — all core error handling concepts solid. `thiserror`
+and `anyhow` crates deferred until multiple error sources need composing.
+
+**Notes Created:**
+- `notes/1.4-error-handling/main.pdf`
+
+**Code Written:**
+- `scratch.rs` — error handling experiments
+- `pond/src/main.rs` — `WorldError` enum, fallible `create_world`, `Display`
+  impl, `expect` in main
+
+**Curriculum Adaptations:**
+- Deferred `thiserror`/`anyhow` crates to when the project has multiple error
+  sources that need composing (likely Module 2.4 or when adding file I/O)
+
+**Next Session:**
+- Begin Module 1.5 (Iterators and Closures) — `Iterator` trait, adapters,
+  closures, `Fn`/`FnMut`/`FnOnce`
+- Apply to pond: iterate over world entities, query the grid with combinators
+
 ---
 
 ## 6. Reference Material

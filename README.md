@@ -31,7 +31,8 @@ project is called "pond."
 ### Continuing
 ```
 Let's continue the Rust course. Read LEARNING_PLAN.md and check the Progress
-Log for where we left off. Pick up from there.
+Log for where we left off. Pick up from there. It is also
+worth checking the notes for the last few notes sets that were written.
 ```
 
 ### Deep-dive on something specific

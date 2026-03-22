@@ -30,13 +30,30 @@ trait Symbol {
     fn symbol(&self) -> char;
 }
 
+#[derive(Debug)]
+enum WorldError {
+    ZeroDimensions,
+    TooManyTiles {total: usize},
+}
 
+impl fmt::Display for WorldError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            WorldError::ZeroDimensions => {
+                write!(f, "World dimensions cannot be zero.")
+            }
+            WorldError::TooManyTiles { total } => {
+                write!(f, "World has too many tiles: {}. Maximum allowed is 10000.", total)
+            }
+        }
+    }
+}
 
 fn main() {
     let width = 10;
     let height = 8;
 
-    let grid = create_world(width, height);
+    let grid = create_world(width, height).expect("Hard coded dimensions should be valid");
 
     display_world(&grid, width, height);
 
@@ -122,8 +139,16 @@ impl fmt::Display for Terrain {
     }
 }
 
-fn create_world(width: usize, height: usize) -> Vec<Tile> {
-    let mut grid = Vec::new();
+fn create_world(width: usize, height: usize) -> Result<Vec<Tile>, WorldError> {
+    if width == 0 || height == 0 {
+        return Err(WorldError::ZeroDimensions);
+    }
+    let total_tiles = width * height;
+    if total_tiles > 10000 {
+        return Err(WorldError::TooManyTiles { total: total_tiles });
+    }
+    
+    let mut grid = Vec::with_capacity(total_tiles);
 
     for y in 0..height {
         for x in 0..width {
@@ -131,7 +156,7 @@ fn create_world(width: usize, height: usize) -> Vec<Tile> {
             grid.push(tile);
         }
     }
-    grid
+    Ok(grid)
 }
 
 fn display_world(grid: &[Tile], width: usize, height: usize) {

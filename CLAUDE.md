@@ -23,6 +23,9 @@ scaffold — adapt it based on how sessions go.
 - **When stuck:** Targeted explanation. Explain the concept, let them apply it.
 - **Anti-preferences:** No hand-holding, no toy examples, no framework worship
   before understanding fundamentals, no busywork.
+- **End goal:** Enough Rust fluency to use coding agents effectively —
+  understanding the design space so he can have informed opinions, evaluate
+  generated code, and steer architectural decisions.
 
 ## Session Protocol (Summary)
 
