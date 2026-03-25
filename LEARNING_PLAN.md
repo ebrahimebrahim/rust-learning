@@ -1173,6 +1173,62 @@ and `anyhow` crates deferred until multiple error sources need composing.
   closures, `Fn`/`FnMut`/`FnOnce`
 - Apply to pond: iterate over world entities, query the grid with combinators
 
+### Session 8 — 2026-03-24
+**Module:** 1.5 — Iterators and Closures (in progress)
+**Duration:** ~25 min
+**Covered:**
+- `Iterator` trait: `type Item`, `fn next(&mut self) -> Option<Self::Item>`
+- Associated types vs generics: implementor chooses vs caller chooses
+- Bounded associated types: `type IntoIter: Iterator<Item = Self::Item>`
+- `Self` in trait definitions = the implementing type
+- `IntoIterator` and `for` loop desugaring
+- Three `IntoIterator` impls for `Vec`: `into_iter()`, `(&vec).into_iter()`,
+  `(&mut vec).into_iter()` — ownership in iteration
+- Blanket impl: every `Iterator` automatically implements `IntoIterator`
+- Lazy adapters (`.filter()`, `.map()`) vs consumers (`.sum()`, `.collect()`)
+- `filter`'s double reference: `&Item` passed to predicate, `&&i32` with `.iter()`
+- Operator dispatch vs method auto-deref: operators don't chain deref, methods do
+- Closures: syntax, capture from environment, etymology ("closing" free variables)
+- Capture modes: `&T` (reads), `&mut T` (mutates), move (consumes) — compiler
+  picks least restrictive
+- `move` keyword to force ownership capture
+- `Fn`, `FnMut`, `FnOnce`: closure traits based on how the hidden struct's call
+  method receives `self` — hierarchy `Fn` ⊂ `FnMut` ⊂ `FnOnce`
+
+**Key Insights:**
+- Learner correctly asked why auto-deref didn't resolve `&&i32 % 2` — led to
+  discovery that operator dispatch and method dispatch use different mechanisms
+- Good question about `Self` and bounded associated types — both genuinely new
+  syntax forms, clarified in terms of Haskell type families
+- Closure capture mode inference clicked quickly once framed as "least
+  restrictive" — correctly predicted `&mut` for the `count += 1` closure
+- Etymology question ("why closures?") shows interest in precise terminology
+
+**Exercises:**
+- Iterator chain in scratch.rs (sum of squares of evens): completed
+- Closure capture experiments (move, borrow conflicts): completed
+- Pond grid queries with iterator combinators: deferred to next session
+
+**Checkpoint:** Partial — iterator protocol, closures, capture modes, and
+closure traits covered conceptually. Hands-on application to pond deferred.
+
+**Notes Created:**
+- `notes/1.5-iterators-closures/main.pdf`
+
+**Code Written:**
+- `scratch.rs` — iterator chain and closure experiments
+
+**Curriculum Adaptations:**
+- None
+
+**Next Session:**
+- Hands-on exercise: query the pond grid with iterator chains (count creatures,
+  find resource tiles, collect entity names)
+- Implementing `Iterator` for a custom type
+- `collect()` and turbofish syntax
+- Potentially: apply closures more deeply in pond (e.g., configurable world
+  generation with closure parameters)
+
 ---
 
 ## 6. Reference Material
