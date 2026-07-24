@@ -11,10 +11,11 @@ meets an AI research sandbox, built from scratch in Rust.
 
 ## How This Works
 
-This workspace is designed to be used with [Claude Code](https://claude.com/claude-code).
-Each session, Claude reads `LEARNING_PLAN.md` to understand where you are,
-what you've covered, and how to teach you. The plan adapts as you go — it's a
-living document, not a fixed syllabus.
+This workspace is designed to be used with a repository-capable coding agent.
+`AGENTS.md` provides the session bootstrap and directs the agent to read
+`LEARNING_PLAN.md` to understand where you are, what you've covered, and how
+to teach you. The plan adapts as you go — it's a living document, not a fixed
+syllabus.
 
 You show up, paste a prompt, and start learning. No prep needed.
 
@@ -51,14 +52,14 @@ See `LEARNING_PLAN.md` Section 7 for more session starters.
 
 ## What to Expect in a Session
 
-1. **Recap** — Claude catches you up on where you left off
+1. **Recap** — The agent catches you up on where you left off
 2. **Concept + Build** — Learn a Rust concept, then immediately apply it to
    pond. Theory and practice interleaved.
 3. **Checkpoint** — A conversational check that you've got it
 4. **Bridge** — Set up what's next
 
 Sessions are adaptive. If you're chasing an idea, the session follows your
-energy. If you're in "learn mode," Claude leads with theory. Push back
+energy. If you're in "learn mode," the agent leads with theory. Push back
 anytime — the pacing is yours to control.
 
 ## Curriculum Overview
@@ -85,7 +86,7 @@ As the course progresses, the workspace will grow:
 
 ```
 pond/                       # This directory
-├── CLAUDE.md               # Claude's session bootstrap
+├── AGENTS.md               # Agent session bootstrap
 ├── LEARNING_PLAN.md        # The full curriculum and progress log
 ├── README.md               # You're reading this
 ├── notes/                  # Typst notes created during sessions
@@ -101,7 +102,7 @@ pond/                       # This directory
 
 - **Follow your curiosity.** If something fascinates you mid-session, chase
   it. The curriculum will adapt.
-- **Push back on Claude.** If the pacing is wrong, the explanation isn't
+- **Push back on the agent.** If the pacing is wrong, the explanation isn't
   clicking, or you want to go deeper — say so.
 - **No prep needed.** Just show up and paste a session starter.
 - **The plan evolves.** Modules get reordered, new ones appear, some get

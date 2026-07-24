@@ -1,8 +1,8 @@
 # pond — Rust Learning Plan
 
-> **Living document.** Claude is expected to actively search for new resources,
-> adapt the curriculum, reorder modules, and evolve this plan as sessions
-> progress. The plan is a scaffold, not a cage.
+> **Living document.** The coding agent is expected to actively search for new
+> resources, adapt the curriculum, reorder modules, and evolve this plan as
+> sessions progress. The plan is a scaffold, not a cage.
 
 **Project:** pond — a simulation ecosystem where agents inhabit, act within,
 and emerge from a living world. Think Dwarf Fortress meets Caves of Qud meets
@@ -49,7 +49,7 @@ an AI research sandbox.
 ### Learning Style
 - **Adaptive theory-practice balance:** When chasing a project idea → let the
   project drive. When not actively chasing something → theory-first is the
-  default. Claude should read the room.
+  default. The coding agent should read the room.
 - **When stuck:** Targeted explanation. Don't let them flounder, but don't
   hand them the answer either. Explain the concept they're missing so they can
   apply it themselves.
@@ -73,8 +73,9 @@ an AI research sandbox.
 - **Rust:** Not yet installed (install in session 0)
 - **Typst:** 0.14.2 installed via snap, compiles successfully from project dir
 - **PDF viewer:** xdg-open available
-- **Editor:** Using Claude Code (CLI) — code is written and edited through
-  Claude sessions
+- **Agent interface:** A repository-capable coding agent (CLI or equivalent)
+  with filesystem, shell, and Git access; web access is useful but optional
+- **Workflow:** Code is written and edited during agent-assisted sessions
 
 ### Anti-Preferences
 - Don't over-explain things inferable from their C++/Haskell background
@@ -566,9 +567,9 @@ systems? How does async enable multiplayer? Content determined at runtime.
 
 ### Session Flow
 
-1. **Recap** (2-3 min): Claude reads the Progress Log and recaps where we
-   left off. If there's been a gap, do a fuller recap. Reference specific
-   code and concepts from the last session.
+1. **Recap** (2-3 min): The coding agent reads the Progress Log and recaps
+   where we left off. If there's been a gap, do a fuller recap. Reference
+   specific code and concepts from the last session.
 
 2. **Warm-up** (5 min, optional): A quick exercise that activates relevant
    prior knowledge. Skip if the learner is eager to dive in or continuing
@@ -641,7 +642,7 @@ Synthesis is distinct from cumulative assessment.
 - **Synthesis** discovers connections between topics that weren't visible
   when studied separately — it's forward-looking and generative.
 
-At synthesis points marked in the curriculum (⟁), Claude should:
+At synthesis points marked in the curriculum (⟁), the coding agent should:
 1. Review all notes and session artifacts (not just since the last synthesis —
    reach back to any prior material)
 2. Identify cross-cutting connections: "ownership + ECS creates this
@@ -658,7 +659,7 @@ produce valuable tangents that couldn't have been predicted.
 
 ```
 pond/                       # Root project
-├── CLAUDE.md               # Claude Code bootstrap
+├── AGENTS.md               # Coding agent bootstrap
 ├── LEARNING_PLAN.md        # This document
 ├── README.md               # Human-facing guide
 ├── notes/                  # Typst notes (rendered during sessions)
@@ -693,9 +694,9 @@ pond/                       # Root project
 
 ### Adaptivity & Resource Discovery
 
-Claude should actively:
-- **Search the web** for new resources during sessions when a topic comes up
-  that could benefit from external material
+The coding agent should actively:
+- **Search the web**, when web access is available, for new resources during
+  sessions when a topic comes up that could benefit from external material
 - **Adapt the curriculum** based on how sessions go — add, remove, or reorder
   modules
 - **Update resource lists** when better resources are discovered
@@ -765,7 +766,7 @@ Claude should actively:
 | [rustup](https://rustup.rs/) | Toolchain manager | Install and manage Rust versions |
 | [cargo](https://doc.rust-lang.org/cargo/) | Build system | The build system. Learn it well. |
 | [clippy](https://github.com/rust-lang/rust-clippy) | Linter | Catches common mistakes, teaches idioms |
-| [rust-analyzer](https://rust-analyzer.github.io/) | LSP | IDE support. Will be relevant if/when using an editor alongside Claude. |
+| [rust-analyzer](https://rust-analyzer.github.io/) | LSP | IDE support. Will be relevant if/when using an editor alongside the agent-assisted workflow. |
 | [criterion](https://github.com/bheisler/criterion.rs) | Benchmarking | Statistical benchmarking framework |
 | [cargo-flamegraph](https://github.com/flamegraph-rs/flamegraph) | Profiling | Performance profiling |
 | [serde](https://serde.rs/) | Serialization | The serialization framework. Will be used heavily. |
@@ -822,7 +823,7 @@ Claude should actively:
 - Learner asks good "why" questions (target dir naming, debug symbols, binary
   vs library distinction) — confirm theory-first calibration is right
 - Prefers to run generative commands themselves (`cargo new`) — let them drive
-  creation, Claude can run read/inspection commands freely
+  creation; the coding agent can run read/inspection commands freely
 
 **Exercises:**
 - Grid world code written, not yet run by learner: in-progress
@@ -900,7 +901,7 @@ ownership-in-structs not yet covered
 
 **Curriculum Adaptations:**
 - Added scratch file workflow (direct `rustc`, no Cargo) for quick
-  experimentation; documented in CLAUDE.md
+  experimentation; documented in `AGENTS.md`
 
 **Next Session:**
 - Solidify ownership with an exercise: refactor `main.rs` to pass the grid

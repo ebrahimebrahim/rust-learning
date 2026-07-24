@@ -1,4 +1,4 @@
-# pond — Claude Session Bootstrap
+# pond — Agent Session Bootstrap
 
 **Read `LEARNING_PLAN.md` before doing anything.** Especially the Session
 Protocol (Section 3) and the Progress Log (Section 5) to know where we are.
@@ -71,7 +71,8 @@ the learner follows, not just to deliver material.
 ## Adaptivity
 
 The plan is a scaffold, not a script. You should:
-- Search the web for resources when a topic benefits from external material
+- Search the web, when web access is available, for resources when a topic
+  benefits from external material
 - Reorder, add, or remove modules based on how sessions go
 - Log all adaptations in the Progress Log
 - Watch for moments when adopting a framework (like bevy_ecs) would be
